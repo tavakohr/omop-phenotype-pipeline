@@ -1,0 +1,105 @@
+# =============================================================================
+# Secrets — NEVER commit
+# =============================================================================
+.env
+.env.local
+*.pem
+*.key
+
+# =============================================================================
+# Licensed data — DO NOT redistribute (PhysioNet, OHDSI Athena terms)
+# =============================================================================
+
+# MIMIC-IV (any version) — PhysioNet credentialed-access dataset
+mimic-iv-demo-data-in-the-omop-common-data-model-*/
+mimic-iv*/
+mimiciv*/
+mimic-iv-note/
+
+# Any raw or filtered MIMIC CSVs sitting in the project
+data/extracted/
+data/filtered/
+data/raw_mimic/
+
+# Gzipped CSVs anywhere in the project — almost always source data
+*.csv.gz
+
+# OMOP standard vocabulary CSVs from Athena
+# (Athena terms of use prohibit public redistribution; download per-user instead)
+data/vocab/
+**/CONCEPT.csv
+**/CONCEPT_ANCESTOR.csv
+**/CONCEPT_RELATIONSHIP.csv
+**/CONCEPT_SYNONYM.csv
+**/VOCABULARY.csv
+**/DOMAIN.csv
+**/DRUG_STRENGTH.csv
+
+# =============================================================================
+# Pipeline outputs that may contain MIMIC patient identifiers
+# =============================================================================
+
+# Everything under data/results/ is gitignored EXCEPT the final summary CSV.
+# (Use /* so negations below can re-include specific files; using /
+# without the asterisk would exclude the directory and block re-inclusion.)
+data/results/*
+!data/results/pipeline_summary_mimic5k_gamma.csv
+!data/results/.gitkeep
+
+# Per-cell intermediate data: contain MIMIC person_ids — keep local only
+data/results/patients/
+data/results/expanded/
+
+# =============================================================================
+# Internal exploration / scratch — not part of the pipeline
+# =============================================================================
+ddl_tmp/
+*.scratch.*
+
+# =============================================================================
+# R session / RStudio
+# =============================================================================
+.Rhistory
+.Rapp.history
+.RData
+.Ruserdata
+.Rproj.user/
+
+# =============================================================================
+# renv — keep lockfile and activation script, ignore the per-machine library
+# =============================================================================
+renv/library/
+renv/local/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/staging/
+renv/sandbox/
+
+# =============================================================================
+# Rendered Rmd reports (regenerable from .Rmd source)
+# =============================================================================
+reports/*.html
+reports/*_files/
+reports/*_cache/
+
+# =============================================================================
+# Generated DDL / temporary SQL we built during ETL setup
+# =============================================================================
+*.sql.tmp
+_q.sql
+
+# =============================================================================
+# OS / editor cruft
+# =============================================================================
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.vscode/
+.idea/
+
+# =============================================================================
+# AI coding-agent per-project settings (tool-specific, not reviewer-facing)
+# =============================================================================
+.claude/
