@@ -1,0 +1,67 @@
+Phenotype: Acute Liver Injury (broad concept set; etiology exclusion is applied at patient level)
+
+OHDSI Phenotype Library reference: cohortId 736 — "Acute Liver Injury NO viral, alcoholic, chronic hepatic failure"
+
+IMPORTANT framing: The OHDSI cohort uses a BROAD inclusion concept set that captures every variety of liver injury, including viral and alcoholic causes. The exclusion of viral / alcoholic etiology happens at the cohort temporal-logic layer (patient must NOT have a viral or alcoholic dx in their history), NOT at the concept-set layer. Therefore, for this concept-set generation task, enumerate ALL liver-injury-related concepts, including viral hepatitis subtypes and alcohol-related liver disease. Set is_excluded = false for them. The patient-level exclusion is handled downstream.
+
+Conditions to include (broad anchors with include_descendants = true):
+- Acute liver injury
+- Acute hepatic failure / Hepatic failure / Chronic hepatic failure
+- Liver disease (general anchor)
+- Hepatitis (general anchor)
+- Toxic hepatitis / Drug-induced liver injury
+- Hepatic necrosis
+- Hepatorenal syndrome
+- Hepatic encephalopathy / Hepatic coma
+- Jaundice (as a presenting sign of acute hepatic dysfunction)
+- Cholestasis / Intrahepatic cholestasis
+
+Specific condition subtypes to include (mostly include_descendants = false):
+- Acute hepatitis A
+- Acute hepatitis B (with and without hepatic coma)
+- Acute hepatitis C
+- Acute hepatitis D
+- Acute hepatitis E
+- Chronic viral hepatitis B (with and without delta agent)
+- Chronic viral hepatitis C (with and without hepatic coma)
+- Autoimmune hepatitis
+- Alcoholic hepatitis
+- Alcoholic cirrhosis
+- Alcoholic hepatic failure
+- Acute alcoholic liver disease
+- Harmful pattern of use of alcohol (alcohol use disorder)
+- Hepatic ascites due to chronic alcoholic hepatitis
+- Inflammatory disease of liver
+- Non-alcoholic fatty liver disease (NAFLD) / Steatohepatitis (NASH)
+- Wilson disease
+- Hemochromatosis
+- Cirrhosis of liver (any etiology)
+
+Drug-induced (relevant when investigating acute presentation):
+- Acetaminophen overdose / Paracetamol poisoning
+- Drug-induced cholestasis
+- Hepatitis due to drugs and toxic agents
+
+Laboratory markers (include — for this phenotype labs ARE part of identification):
+- Aspartate aminotransferase (AST) in Serum or Plasma
+- Alanine aminotransferase (ALT) in Serum or Plasma
+- Bilirubin.total in Serum or Plasma
+- Bilirubin.direct in Serum or Plasma
+- Alkaline phosphatase in Serum or Plasma
+- INR / Prothrombin time
+- Gamma-glutamyl transferase (GGT)
+- Albumin in Serum or Plasma
+- Ammonia in Plasma
+
+Procedures (include where defining):
+- Liver biopsy
+- Liver transplant
+- Paracentesis (for ascites)
+
+Vocabulary domains expected:
+- Conditions: SNOMED CT
+- Drugs: RxNorm (acetaminophen, hepatotoxic drugs)
+- Lab measurements: LOINC
+- Procedures: CPT4 / SNOMED
+
+Important: the historical/legacy brief said "EXCLUDE viral hepatitis" and "EXCLUDE alcoholic". That language referred to cohort-LEVEL exclusion (a patient with viral hepatitis is excluded from the final cohort), NOT to the concept set itself. For this concept-set enumeration task, INCLUDE these concepts so the predicted set can match the OHDSI gold seed list.

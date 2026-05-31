@@ -1,0 +1,64 @@
+Phenotype: Chronic Obstructive Pulmonary Disease (COPD)
+
+OHDSI Phenotype Library reference: cohortId 506 — "Chronic obstructive lung disease" (peer-reviewed reference cohort)
+
+Key clinical points:
+- Irreversible airflow obstruction; defined by post-bronchodilator FEV1/FVC < 0.70
+- Two main subtypes: chronic bronchitis (productive cough ≥ 3 months for 2 consecutive
+  years) and emphysema (alveolar destruction)
+- Condition concepts: COPD, emphysema, chronic bronchitis, chronic obstructive lung
+  disease, chronic airway obstruction
+- Severity staging (GOLD): mild, moderate, severe, very severe COPD
+
+Diagnostic codes to capture:
+- SNOMED: "Chronic obstructive lung disease" (concept for umbrella term)
+- ICD-10CM: J44.x series (J44.0, J44.1, J44.9)
+- ICD-10CM: J43.x (emphysema subtype)
+- ICD-10CM: J41.x, J42 (chronic bronchitis subtypes)
+
+Procedures and measurements:
+- Spirometry / pulmonary function test (PFT) — procedure concepts
+- Bronchodilator reversibility testing
+
+Drug treatments (enumerate ingredients):
+- Short-acting bronchodilators:
+    - Albuterol (salbutamol) — SABA
+    - Ipratropium — SAMA
+- Long-acting bronchodilators:
+    - Salmeterol, formoterol, indacaterol, olodaterol — LABAs
+    - Tiotropium, aclidinium, glycopyrronium, umeclidinium — LAMAs
+- Inhaled corticosteroids (ICS) — only in combination for COPD:
+    - Fluticasone, budesonide, beclomethasone
+- Combination inhalers (dual/triple therapy):
+    - ICS/LABA combinations (e.g., fluticasone/salmeterol, budesonide/formoterol)
+    - LAMA/LABA combinations (e.g., tiotropium/olodaterol, umeclidinium/vilanterol)
+    - Triple therapy (ICS/LABA/LAMA)
+- Roflumilast — PDE4 inhibitor for severe COPD with chronic bronchitis
+- Systemic corticosteroids during exacerbations (prednisone, methylprednisolone)
+- Antibiotics used during exacerbations (azithromycin prophylaxis):
+    - Azithromycin
+
+Exacerbation-related concepts:
+- Acute exacerbation of COPD
+- COPD with acute lower respiratory infection
+- Hospitalisation for COPD exacerbation
+
+Supportive and advanced care:
+- Long-term oxygen therapy (LTOT) — drug/device concept
+- Pulmonary rehabilitation — procedure concept
+- Non-invasive positive-pressure ventilation (NIPPV / BiPAP) — procedure concept
+- Lung volume reduction surgery (LVRS) — procedure concept
+- Lung transplantation — procedure concept (severe/end-stage)
+
+EXCLUDE:
+- Asthma (unless confirmed COPD-asthma overlap, then include as separate concept set)
+- Acute asthma exacerbations miscoded as COPD
+- Cystic fibrosis (J84.x / SNOMED)
+- Bronchiectasis (unless as a comorbidity concept, not as defining condition)
+
+Temporal / inclusion logic notes:
+- At least 1 qualifying COPD diagnosis in the observation period
+- Age ≥ 40 at index date (COPD is predominantly a disease of middle-aged/elderly adults)
+- Typically requires ≥ 365 days of prior observation for prevalent phenotype definitions
+
+Gold standard concept count: update after running extract_gold_standards.R

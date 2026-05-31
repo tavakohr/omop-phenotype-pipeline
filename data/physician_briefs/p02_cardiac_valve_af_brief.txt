@@ -1,0 +1,22 @@
+Phenotype: Cardiac Valve Surgery with Post-operative New-onset Atrial Fibrillation
+
+⚠ THIS BRIEF IS A PLACEHOLDER — write the full clinical description here
+before running the pipeline for this phenotype.
+
+Use p01_t2dm_brief.txt as a template. The brief should cover:
+- Clinical definition
+- Positive criteria (all conditions, procedures, medications required)
+- Exclusion criteria (explicit "exclude" / "no prior" language)
+- Temporal logic notes (for ATLAS — not concept set)
+- Vocabulary domains needed
+
+Key clinical points to cover:
+- Atrial fibrillation must be NEW-ONSET (no prior AF history)
+- Must occur in INPATIENT setting (not ED)
+- Must be post-operative (after cardiac valve surgery)
+- Valve surgery types: aortic, mitral, tricuspid, pulmonary; repair vs replacement
+- Exclude patients with any prior AF
+- Exclude ED-only encounters
+
+OHDSI Phenotype Library reference: cohortId 11103
+Gold standard concept count: 194 (mostly procedural valve surgery subtypes)

@@ -1,0 +1,44 @@
+Phenotype: Type 2 Diabetes Mellitus (T2DM)
+
+Clinical definition:
+Patient has an established diagnosis of Type 2 Diabetes Mellitus — adult-onset,
+non-insulin-dependent diabetes. This phenotype captures patients identifiable through
+diagnosis codes, antidiabetic medication use, or qualifying laboratory values.
+
+Positive criteria — any ONE of the following qualifies:
+1. A coded diagnosis of Type 2 Diabetes Mellitus or any of its subtypes or
+   complications (e.g., T2DM with diabetic nephropathy, T2DM with retinopathy,
+   T2DM with neuropathy, T2DM with peripheral angiopathy, T2DM in ketoacidosis)
+
+2. A dispensed antidiabetic medication from any of these drug classes:
+   - Biguanides: metformin
+   - Sulfonylureas: glipizide, glyburide, glimepiride, chlorpropamide, tolazamide
+   - DPP-4 inhibitors: sitagliptin, saxagliptin, alogliptin, linagliptin
+   - GLP-1 receptor agonists: exenatide, liraglutide, dulaglutide, semaglutide,
+     albiglutide, lixisenatide
+   - SGLT-2 inhibitors: canagliflozin, dapagliflozin, empagliflozin, ertugliflozin
+   - Thiazolidinediones: pioglitazone, rosiglitazone
+   - Meglitinides: repaglinide, nateglinide
+   - Alpha-glucosidase inhibitors: acarbose, miglitol
+   - Insulin (all types when used for T2DM: insulin glargine, insulin detemir,
+     insulin aspart, insulin lispro, NPH insulin, regular insulin, insulin degludec)
+
+3. A qualifying HbA1c laboratory result of 6.5% or higher
+   (LOINC: Hemoglobin A1c/Hemoglobin.total in Blood)
+
+Exclusion criteria — explicitly exclude patients with ONLY:
+- Type 1 Diabetes Mellitus (no T2DM diagnosis)
+- Gestational diabetes mellitus
+- Drug-induced / secondary diabetes (steroid-induced, post-transplant)
+- Prediabetes / impaired fasting glucose / impaired glucose tolerance ALONE
+
+Temporal logic (implement in ATLAS — not in the concept set):
+- Index date = date of first qualifying event (diagnosis, drug dispensing, or lab)
+- Prior observation: patient should have at least 1 year of prior observation
+- At least 2 condition occurrences OR 1 inpatient occurrence OR drug + lab evidence
+  is required for strong phenotype definition
+
+Vocabulary domains needed:
+- Conditions (diagnoses): SNOMED CT
+- Medications: RxNorm (individual drug ingredients)
+- Lab measurements: LOINC

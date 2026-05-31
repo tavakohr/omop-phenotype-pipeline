@@ -1,0 +1,22 @@
+{
+  "cohort_id": 506,
+  "cohort_name": "copd",
+  "cohort_description": "Chronic obstructive lung disease",
+  "gold_concept_ids": 255573,
+  "excluded_concept_ids": [],
+  "n_gold": 1,
+  "n_excluded": 0,
+  "all_items": [
+    {
+      "concept_id": 255573,
+      "concept_name": "Chronic obstructive lung disease",
+      "standard_concept": "S",
+      "domain_id": "Condition",
+      "vocabulary_id": "SNOMED",
+      "concept_set_name": "Chronic obstructive lung disease",
+      "is_excluded": false,
+      "include_descendants": true,
+      "include_mapped": false
+    }
+  ]
+}

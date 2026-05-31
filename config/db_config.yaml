@@ -1,0 +1,92 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# PostgreSQL connection
+# ─────────────────────────────────────────────────────────────────────────────
+database:
+  host: localhost
+  port: 5432
+  dbname: your_database_name        # ← EDIT
+  user: your_username               # ← EDIT
+  password: your_password           # ← EDIT (or use .env DB_PASSWORD)
+  vocab_schema: vocab               # schema containing OMOP vocabulary tables
+  cdm_schema: mimiciv_omop          # MIMIC-IV v3.1, 5,000-patient subset, seed=42 (built by ../mimic-iv-omop-etl/, 2026-05-31)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LLM models — both run on every phenotype for comparison
+# API keys must be set in .env (ANTHROPIC_API_KEY, GEMINI_API_KEY)
+# ─────────────────────────────────────────────────────────────────────────────
+llm:
+  models:
+    - provider: anthropic
+      model: claude-opus-4-6        # Claude Opus 4.6
+      temperature: 0.3
+      max_output_tokens: 16384
+      label: claude_opus_4_6
+
+    - provider: gemini
+      model: gemini-2.5-flash       # Gemini 2.5 Flash — for comparison
+      temperature: 0.3
+      max_output_tokens: 16384
+      label: gemini_flash
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Pipeline settings
+# ─────────────────────────────────────────────────────────────────────────────
+pipeline:
+  trials_per_cell: 3                # number of times to run each model × phenotype (variance measurement)
+  max_concepts_per_phenotype: 100   # concept name budget given to LLM
+  expansion:
+    include_descendants: true
+    max_descendant_levels: null     # null = all levels (recommended)
+    include_cross_vocab: true
+    target_vocabularies:
+      - ICD10CM
+      - ICD9CM
+      - RxNorm
+      - LOINC
+      - CPT4
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Phenotypes to run
+# ─────────────────────────────────────────────────────────────────────────────
+phenotypes:
+  - key: t2dm
+    cohort_id: 288
+    brief: data/physician_briefs/p01_t2dm_brief.txt
+    gold: data/gold_standards/p01_t2dm.json
+    gold_concept_count: 17
+    exclude_labs_in_patient_query: true   # T2DM is condition-coded; labs over-flag every ICU patient with glucose tests
+
+  - key: cardiac_valve_af
+    cohort_id: 1103
+    brief: data/physician_briefs/p02_cardiac_valve_af_brief.txt
+    gold: data/gold_standards/p02_cardiac_valve_af.json
+    gold_concept_count: 181
+    exclude_labs_in_patient_query: true   # cardiac surgery is procedure-coded; labs add noise
+
+  - key: acute_liver_injury
+    cohort_id: 736
+    brief: data/physician_briefs/p03_acute_liver_injury_brief.txt
+    gold: data/gold_standards/p03_acute_liver_injury.json
+    gold_concept_count: 30
+    exclude_labs_in_patient_query: false  # liver injury is often lab-driven; AST/ALT/INR ARE the signal
+
+  - key: drug_pancreatitis
+    cohort_id: 253
+    brief: data/physician_briefs/p04_drug_pancreatitis_brief.txt
+    gold: data/gold_standards/p04_drug_pancreatitis.json
+    gold_concept_count: 31
+    exclude_labs_in_patient_query: false  # lipase/amylase elevations help define pancreatitis
+
+  - key: trd
+    cohort_id: 1009
+    brief: data/physician_briefs/p05_trd_brief.txt
+    gold: data/gold_standards/p05_trd.json
+    gold_concept_count: 69
+    exclude_labs_in_patient_query: true   # depression has no lab definition; labs only add noise
+
+  # Add new phenotypes below following the same pattern:
+  # - key: hypertension
+  #   cohort_id: XXXX
+  #   brief: data/physician_briefs/p07_hypertension_brief.txt
+  #   gold: data/gold_standards/p07_hypertension.json
+  #   gold_concept_count: ~XX

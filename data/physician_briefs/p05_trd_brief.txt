@@ -1,0 +1,16 @@
+Phenotype: Treatment-Resistant Depression (TRD)
+
+⚠ THIS BRIEF IS A PLACEHOLDER — write the full clinical description here.
+
+Key clinical points:
+- Major Depressive Disorder (MDD) that has failed at least 2 adequate
+  antidepressant trials at therapeutic doses
+- Antidepressant classes: SSRIs, SNRIs, TCAs, MAOIs (enumerate ingredients)
+- Augmentation agents used in TRD: atypical antipsychotics
+  (aripiprazole, quetiapine, olanzapine, brexpiprazole)
+- Lithium augmentation
+- Electroconvulsive therapy (ECT) as a procedure
+- EXCLUDE bipolar depression
+
+OHDSI Phenotype Library reference: cohortId 11009
+Gold standard concept count: 70

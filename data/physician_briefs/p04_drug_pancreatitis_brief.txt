@@ -1,0 +1,13 @@
+Phenotype: Drug-Induced Acute Pancreatitis
+
+⚠ THIS BRIEF IS A PLACEHOLDER — write the full clinical description here.
+
+Key clinical points:
+- Acute pancreatitis where the cause is a specific drug/medication
+- Must include the causative drug agents (RxNorm)
+- EXCLUDE: alcoholic pancreatitis, biliary/gallstone pancreatitis,
+  hereditary pancreatitis, post-ERCP pancreatitis
+- The exclusion aetiologies must be enumerated with "exclude" language
+
+OHDSI Phenotype Library reference: cohortId 3957
+Gold standard concept count: 32
