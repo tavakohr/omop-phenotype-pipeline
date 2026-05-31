@@ -1,0 +1,98 @@
+---
+title: "OMOP Phenotype Pipeline — Results Comparison"
+author: "H. Tavakoli, MD"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(knitr)
+library(tidyr)
+```
+
+## Load Results
+
+```{r load}
+results <- read_csv("../data/results/pipeline_summary.csv", show_col_types = FALSE)
+
+# Mean across trials
+summary_mean <- results |>
+  group_by(phenotype, model) |>
+  summarise(
+    mean_f1          = mean(f1,              na.rm = TRUE),
+    sd_f1            = sd(f1,                na.rm = TRUE),
+    mean_f1_aa       = mean(f1_aa,           na.rm = TRUE),
+    mean_recall      = mean(recall,          na.rm = TRUE),
+    mean_precision   = mean(precision,       na.rm = TRUE),
+    mean_res_rate    = mean(resolution_rate, na.rm = TRUE),
+    n_trials         = n(),
+    .groups = "drop"
+  )
+
+kable(summary_mean, digits = 3, caption = "Mean metrics across trials")
+```
+
+## F1 by Phenotype and Model
+
+```{r f1_plot, fig.width=9, fig.height=5}
+ggplot(summary_mean, aes(x = phenotype, y = mean_f1, fill = model)) +
+  geom_bar(stat = "identity", position = position_dodge(0.8), width = 0.7) +
+  geom_errorbar(aes(ymin = mean_f1 - sd_f1, ymax = mean_f1 + sd_f1),
+                position = position_dodge(0.8), width = 0.25) +
+  scale_fill_manual(values = c("claude_opus_4_6" = "#D55E00",
+                                "gemini_flash"    = "#0072B2")) +
+  labs(title = "Exact F1 by Phenotype and Model",
+       x = "Phenotype", y = "Mean F1 (± SD)", fill = "Model") +
+  theme_minimal(base_size = 13) +
+  theme(axis.text.x = element_text(angle = 20, hjust = 1))
+```
+
+## Exact vs Ancestor-Aware F1
+
+```{r aa_plot, fig.width=9, fig.height=5}
+summary_mean |>
+  select(phenotype, model, mean_f1, mean_f1_aa) |>
+  pivot_longer(c(mean_f1, mean_f1_aa), names_to = "metric", values_to = "value") |>
+  mutate(metric = recode(metric,
+    "mean_f1"    = "Exact F1",
+    "mean_f1_aa" = "Ancestor-aware F1"
+  )) |>
+  ggplot(aes(x = phenotype, y = value, fill = interaction(model, metric))) +
+  geom_bar(stat = "identity", position = position_dodge(0.9), width = 0.8) +
+  scale_fill_brewer(palette = "Paired") +
+  labs(title = "Exact vs Ancestor-Aware F1",
+       x = "Phenotype", y = "Mean F1", fill = "Model × Metric") +
+  theme_minimal(base_size = 13) +
+  theme(axis.text.x = element_text(angle = 20, hjust = 1))
+```
+
+## Resolution Rate
+
+```{r resolution}
+ggplot(summary_mean, aes(x = phenotype, y = mean_res_rate, fill = model)) +
+  geom_bar(stat = "identity", position = position_dodge(0.8), width = 0.7) +
+  scale_fill_manual(values = c("claude_opus_4_6" = "#D55E00",
+                                "gemini_flash"    = "#0072B2")) +
+  labs(title = "Concept Name Resolution Rate (%)",
+       subtitle = "% of LLM-generated names successfully resolved by SQL lookup",
+       x = "Phenotype", y = "Resolution Rate (%)", fill = "Model") +
+  theme_minimal(base_size = 13) +
+  theme(axis.text.x = element_text(angle = 20, hjust = 1))
+```
+
+## Per-Trial Detail
+
+```{r per_trial}
+kable(results[, c("phenotype","model","trial","f1","f1_aa",
+                   "precision","recall","resolution_rate","fp","fn")],
+      digits = 3,
+      caption = "Per-trial results")
+```
