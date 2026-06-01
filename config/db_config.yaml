@@ -68,14 +68,14 @@ phenotypes:
     brief: data/physician_briefs/p03_acute_liver_injury_brief.txt
     gold: data/gold_standards/p03_acute_liver_injury.json
     gold_concept_count: 30
-    exclude_labs_in_patient_query: false  # liver injury is often lab-driven; AST/ALT/INR ARE the signal
+    exclude_labs_in_patient_query: true   # enriched brief provides condition-level recall; labs only add FPs from routine ICU panels
 
   - key: drug_pancreatitis
     cohort_id: 253
     brief: data/physician_briefs/p04_drug_pancreatitis_brief.txt
     gold: data/gold_standards/p04_drug_pancreatitis.json
     gold_concept_count: 31
-    exclude_labs_in_patient_query: false  # lipase/amylase elevations help define pancreatitis
+    exclude_labs_in_patient_query: true   # enriched brief now provides condition-level recall; labs over-flag every ICU patient with abdominal-pain workup
 
   - key: trd
     cohort_id: 1009

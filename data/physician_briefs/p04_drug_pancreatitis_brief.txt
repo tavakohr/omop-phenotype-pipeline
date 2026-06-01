@@ -1,13 +1,97 @@
-Phenotype: Drug-Induced Acute Pancreatitis
+Phenotype: Drug-Induced Acute Pancreatitis (broad concept set; etiology exclusion is applied at patient level)
 
-⚠ THIS BRIEF IS A PLACEHOLDER — write the full clinical description here.
+OHDSI Phenotype Library reference: cohortId 253 — "Drug Induced Acute pancreatitis"
 
-Key clinical points:
-- Acute pancreatitis where the cause is a specific drug/medication
-- Must include the causative drug agents (RxNorm)
-- EXCLUDE: alcoholic pancreatitis, biliary/gallstone pancreatitis,
-  hereditary pancreatitis, post-ERCP pancreatitis
-- The exclusion aetiologies must be enumerated with "exclude" language
+IMPORTANT framing: The OHDSI cohort uses a BROAD inclusion concept set that captures every variety of pancreatitis AND its differential-diagnosis context (biliary disorders, gastrointestinal obstruction/perforation, alcohol-related conditions, post-ERCP). The exclusion of alcoholic, biliary, hereditary, and post-ERCP etiologies happens at the cohort temporal-logic layer (patient must NOT have those alternative causes in their history), NOT at the concept-set layer. Therefore, for this concept-set generation task, enumerate ALL of these concepts including the etiologies that the cohort name suggests are "excluded". Set is_excluded = false for them. The patient-level exclusion is handled downstream.
 
-OHDSI Phenotype Library reference: cohortId 3957
-Gold standard concept count: 32
+Pancreatitis concepts (broad anchors with include_descendants = true):
+- Acute pancreatitis
+- Pancreatitis (umbrella concept)
+- Chronic pancreatitis
+- Acute on chronic pancreatitis
+- Pancreatic and peripancreatic necrosis
+- Inflammation of pancreas caused by alcohol
+- Chronic pancreatitis due to chronic alcoholism
+- Chronic pancreatitis due to acute alcohol intoxication
+- Hereditary pancreatitis
+- Gallstone pancreatitis / Biliary acute pancreatitis
+- Pancreatic pseudocyst
+
+Biliary-tract concepts (include_descendants = true on the broad anchor):
+- Disorder of biliary tract (broad anchor)
+- Cholangitis
+- Cholelithiasis (gallstones)
+- Cholecystitis (acute and chronic)
+- Cholelithiasis AND cholecystitis without obstruction
+- Gallstone / Gallbladder calculus
+- Gallbladder calculus with acute cholecystitis
+- Obstruction of bile duct
+- Chronic cholecystitis due to cholelithiasis
+- Disorder of gallbladder
+
+Gastrointestinal-obstruction concepts (include_descendants = true on the broad anchor):
+- Gastrointestinal obstruction
+- Intestinal obstruction
+- Paralytic ileus
+- Obstruction of esophagus
+- Gastrointestinal perforation
+- Perforation of intestine
+- Perforation and abscess of large intestine
+- Vascular insufficiency of intestine
+
+Alcohol-related concepts (mostly include_descendants = false except for the umbrella):
+- Alcoholism (umbrella, with descendants)
+- Alcohol dependence
+- Continuous chronic alcoholism
+- Chronic alcoholism in remission
+- Acute alcohol intoxication
+- Alcohol intoxication
+- Harmful pattern of use of alcohol (alcohol use disorder)
+- Alcoholic liver damage
+- Alcoholic encephalopathy
+- Alcohol-induced organic mental disorder
+- Alcohol myopathy
+- Alcoholic polyneuropathy
+
+Drug classes known to cause acute pancreatitis (RxNorm; enumerate INDIVIDUAL ingredient names with include_descendants = false):
+- GLP-1 receptor agonists: exenatide, liraglutide, semaglutide, dulaglutide, lixisenatide
+- DPP-4 inhibitors: sitagliptin, saxagliptin, alogliptin, linagliptin, vildagliptin
+- Thiazide / loop diuretics: hydrochlorothiazide, chlorothiazide, furosemide
+- Statins: atorvastatin, simvastatin, rosuvastatin, pravastatin
+- ACE inhibitors / ARBs: enalapril, lisinopril, captopril, losartan
+- Immunosuppressants: azathioprine, 6-mercaptopurine, cyclosporine, tacrolimus, mycophenolate mofetil
+- Chemotherapy: L-asparaginase, pegaspargase, cytarabine, cisplatin, ifosfamide, mercaptopurine, tamoxifen
+- Immune checkpoint inhibitors: nivolumab, pembrolizumab, ipilimumab, atezolizumab
+- Anticonvulsants: valproate / valproic acid, divalproex sodium, carbamazepine, lamotrigine
+- Antibiotics: tetracycline, doxycycline, erythromycin, azithromycin, metronidazole, sulfamethoxazole, trimethoprim, pentamidine
+- Antiretrovirals: didanosine, stavudine
+- Estrogens: conjugated estrogens, estradiol, oral contraceptives
+- 5-aminosalicylates: mesalamine, sulfasalazine
+- Corticosteroids: prednisone, prednisolone, methylprednisolone, dexamethasone
+- Antipsychotics: clozapine, olanzapine, risperidone, quetiapine
+- Acid suppressants: cimetidine, ranitidine, omeprazole
+- Retinoids: isotretinoin
+- Other: acetaminophen, codeine, morphine, metformin
+
+Laboratory markers (include — central to pancreatitis diagnosis):
+- Lipase [Enzymatic activity/volume] in Serum or Plasma
+- Amylase [Enzymatic activity/volume] in Serum or Plasma
+- Amylase.pancreatic [Enzymatic activity/volume] in Serum or Plasma
+
+Procedures:
+- Endoscopic retrograde cholangiopancreatography (ERCP) — post-ERCP pancreatitis is mentioned as a differential
+- CT of abdomen (with and without contrast)
+- Magnetic resonance cholangiopancreatography (MRCP)
+- Abdominal ultrasound
+- Pancreas biopsy
+
+Observation:
+- Gathering of adverse drug event history
+
+Vocabulary domains expected:
+- Conditions: SNOMED CT
+- Drugs: RxNorm (individual ingredients above)
+- Lab measurements: LOINC
+- Procedures: CPT4 / SNOMED
+
+Important: the cohort name "Drug Induced Acute pancreatitis" plus "EXCLUDE alcoholic/biliary/hereditary/post-ERCP" describes the cohort's TEMPORAL ENROLLMENT logic — at the patient level, patients with prior alcoholic or biliary disease are removed. For this CONCEPT-SET enumeration task, INCLUDE all of these concepts so the predicted set matches the OHDSI gold seed list, which is the broad inclusion concept set the cohort uses before exclusion criteria are applied.
