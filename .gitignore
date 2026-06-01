@@ -103,3 +103,9 @@ Thumbs.db
 # AI coding-agent per-project settings (tool-specific, not reviewer-facing)
 # =============================================================================
 .claude/
+
+# =============================================================================
+# Submission drafts — keep local during peer review
+# =============================================================================
+submission/
+.positai
