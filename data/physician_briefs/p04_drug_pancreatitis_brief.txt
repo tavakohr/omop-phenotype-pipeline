@@ -46,7 +46,6 @@ Alcohol-related concepts (mostly include_descendants = false except for the umbr
 - Chronic alcoholism in remission
 - Acute alcohol intoxication
 - Alcohol intoxication
-- Harmful pattern of use of alcohol (alcohol use disorder)
 - Alcoholic liver damage
 - Alcoholic encephalopathy
 - Alcohol-induced organic mental disorder

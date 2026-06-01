@@ -1,22 +1,58 @@
-Phenotype: Cardiac Valve Surgery with Post-operative New-onset Atrial Fibrillation
+Phenotype: Cardiac Valve Surgery with Post-operative New-onset Atrial Fibrillation (narrow procedure-and-arrhythmia concept set)
 
-⚠ THIS BRIEF IS A PLACEHOLDER — write the full clinical description here
-before running the pipeline for this phenotype.
+OHDSI Phenotype Library reference: cohortId 1103 — "Cardiac Valve Surgery, adults, inpt stay, no ED, post op new Afib"
 
-Use p01_t2dm_brief.txt as a template. The brief should cover:
-- Clinical definition
-- Positive criteria (all conditions, procedures, medications required)
-- Exclusion criteria (explicit "exclude" / "no prior" language)
-- Temporal logic notes (for ATLAS — not concept set)
-- Vocabulary domains needed
+IMPORTANT framing: The OHDSI cohort uses a NARROW inclusion concept set consisting almost entirely of (a) ICD-9-Proc and ICD-10-PCS codes for valve surgery procedures and (b) the SNOMED concept "Atrial fibrillation" with its descendants. The temporal logic that enforces "new-onset" (no prior AF), "inpatient" (no ED-only), and "post-operative" is applied at the cohort temporal-logic layer at run time — NOT in the concept set. Therefore, for this concept-set generation task, enumerate ONLY the valve surgery procedure variants and atrial fibrillation / closely-related arrhythmia concepts. DO NOT enumerate clinical context.
 
-Key clinical points to cover:
-- Atrial fibrillation must be NEW-ONSET (no prior AF history)
-- Must occur in INPATIENT setting (not ED)
-- Must be post-operative (after cardiac valve surgery)
-- Valve surgery types: aortic, mitral, tricuspid, pulmonary; repair vs replacement
-- Exclude patients with any prior AF
-- Exclude ED-only encounters
+DO NOT INCLUDE (these will appear as false positives — every ICU patient has some):
+- Comorbidities (heart failure, hypertension, coronary artery disease, MI, diabetes, COPD, CKD, AKI, sepsis, pneumonia, alcohol use, obesity, depression, etc.)
+- Treatments not specific to the phenotype (anticoagulants, antiarrhythmics, beta-blockers, calcium-channel blockers, digoxin — these are AF treatments but appear in many other contexts)
+- Imaging or diagnostic procedures (echocardiography, cardiac MRI/CT, cardiac catheterization, ECG, transesophageal echocardiography)
+- Laboratory measurements (BNP, troponin, INR, TSH, hematocrit, etc.)
+- Administrative concepts (Hospital admission, ICU admission, Discharge, Inpatient/Outpatient/ED Visit, Postoperative care)
+- Generic cardiac surgery concepts not tied to valve (CABG, percutaneous coronary intervention)
+- General arrhythmia or rhythm-monitoring concepts (cardiac rehab, rhythm monitoring, Holter, telemetry)
 
-OHDSI Phenotype Library reference: cohortId 11103
-Gold standard concept count: 194 (mostly procedural valve surgery subtypes)
+INCLUDE — valve surgery procedures (broad anchor with include_descendants = true):
+- Heart valve replacement (umbrella anchor for all valve replacements)
+- Repair of heart valve (umbrella anchor for all valve repairs)
+- Operation on heart valve / Other operations on valves of heart
+
+INCLUDE — specific valve procedure variants (mostly include_descendants = false; ICD9Proc and ICD10PCS codes):
+- Open and other replacement of heart valve (general)
+- Open and other replacement of aortic valve
+- Open and other replacement of aortic valve with tissue graft
+- Open and other replacement of mitral valve
+- Open and other replacement of mitral valve with tissue graft
+- Open and other replacement of tricuspid valve
+- Open and other replacement of tricuspid valve with tissue graft
+- Open and other replacement of pulmonary valve
+- Open and other replacement of pulmonary valve with tissue graft
+- Open and other replacement of unspecified heart valve
+- Closed heart valvotomy or transcatheter replacement of heart valve
+- Transcatheter aortic valve implantation (TAVI/TAVR)
+- Transcatheter mitral valve repair (e.g., MitraClip)
+- Transcatheter repair of tricuspid valve
+- Transapical replacement of aortic valve
+- Transapical replacement of pulmonary valve
+- Endovascular replacement of pulmonary valve
+- Endovascular replacement of unspecified heart valve
+- Percutaneous mitral valve repair with implant
+- Closed mitral valve commissurotomy
+- Closed transventricular pulmonary valve commissurotomy
+- Aortic valve commissurotomy with inflow occlusion
+- Porcine aortic / mitral / pulmonary / tricuspid valve replacement
+- Mechanical aortic / mitral / pulmonary / tricuspid valve replacement
+- Annuloplasty (mitral, tricuspid)
+
+INCLUDE — atrial fibrillation and closely-related arrhythmias (SNOMED conditions, mostly include_descendants = true on the broad AF anchor):
+- Atrial fibrillation (broad anchor; descendants cover paroxysmal, persistent, chronic AF variants)
+- Atrial flutter
+- Supraventricular arrhythmia (closely related — gold cohort's AF anchor may capture descendants)
+- Cardiac arrhythmia (general anchor for AF descendants)
+
+Vocabulary domains expected:
+- Procedures: ICD9Proc, ICD10PCS, SNOMED, CPT4 (procedure codes for valve surgery dominate the gold set)
+- Conditions: SNOMED (AF and arrhythmia variants)
+
+Strict scope reminder: the OHDSI cohort 1103 inclusion concept set has ~70 standard concepts after descendant expansion. Aim for a similar-sized, equally focused predicted set. Any broader enumeration (comorbidities, treatments, imaging, labs) inflates the predicted patient cohort with ICU patients who happen to have those concepts in their charts and were never operated on — this destroys precision without contributing to recall.

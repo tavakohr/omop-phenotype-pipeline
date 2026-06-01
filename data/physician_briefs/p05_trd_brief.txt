@@ -1,16 +1,49 @@
-Phenotype: Treatment-Resistant Depression (TRD)
+Phenotype: Treatment-Resistant Depression (TRD) — antidepressant-and-procedure-focused concept set
 
-⚠ THIS BRIEF IS A PLACEHOLDER — write the full clinical description here.
+OHDSI Phenotype Library reference: cohortId 1009 — "Earliest event of Treatment resistant depression (TRD)"
 
-Key clinical points:
-- Major Depressive Disorder (MDD) that has failed at least 2 adequate
-  antidepressant trials at therapeutic doses
-- Antidepressant classes: SSRIs, SNRIs, TCAs, MAOIs (enumerate ingredients)
-- Augmentation agents used in TRD: atypical antipsychotics
-  (aripiprazole, quetiapine, olanzapine, brexpiprazole)
-- Lithium augmentation
-- Electroconvulsive therapy (ECT) as a procedure
-- EXCLUDE bipolar depression
+IMPORTANT framing: The OHDSI cohort defines TRD primarily through PRESCRIPTION PATTERNS (multiple antidepressant trials), not through a "TRD" diagnosis code. The inclusion concept set is therefore dominated by RxNorm antidepressant ingredients (SSRIs, SNRIs, TCAs, MAOIs, atypical antidepressants, augmentation agents) plus a small number of related neuropsychiatric conditions. The temporal sequence ("failed >=2 trials of first-line antidepressants, then prescribed an augmentation agent or ECT") is enforced at the cohort temporal-logic layer at run time — NOT in the concept set. Therefore, for this concept-set generation task, enumerate ONLY the antidepressants and closely-related psychiatric conditions / procedures. DO NOT enumerate the broader psychiatric or substance-use context that ICU patients commonly have.
 
-OHDSI Phenotype Library reference: cohortId 11009
-Gold standard concept count: 70
+DO NOT INCLUDE (these will appear as false positives — they're common ICU comorbidities not specific to TRD):
+- Substance-use disorders (alcohol use disorder, nicotine/tobacco dependence, opioid/cocaine/cannabis use disorders, harmful patterns of use of alcohol/tobacco/opioid/cocaine/cannabis)
+- Other psychiatric disorders that are not the TRD population (anxiety disorders, ADHD, PTSD, anorexia nervosa, panic disorder, OCD)
+- Suicidal thoughts / self-harm concepts (these are downstream consequences, not TRD-defining)
+- Delirium, organic mental disorder caused by drug, dementia subtypes (these are cohort-EXCLUDE per cohort logic, but the OHDSI seeds include the broad "Dementia" anchor only)
+- Anxiolytics, hypnotics, benzodiazepines (these treat anxiety/insomnia, not depression)
+- Antipsychotics used for psychosis-only indications (haloperidol, risperidone — these are in the OHDSI seed but they're also augmentation agents)
+
+INCLUDE — antidepressant ingredients (RxNorm; the gold cohort's largest concept group; use include_descendants = true on the umbrella, false on individual ingredients):
+- SSRIs: fluoxetine, sertraline, escitalopram, citalopram, paroxetine, fluvoxamine
+- SNRIs: venlafaxine, duloxetine, desvenlafaxine, levomilnacipran, milnacipran
+- TCAs: amitriptyline, nortriptyline, imipramine, clomipramine, doxepin, trimipramine, dothiepin, lofepramine, opipramol, maprotiline, mianserin
+- MAOIs: tranylcypromine, phenelzine, selegiline, isocarboxazid, moclobemide
+- Atypical antidepressants: bupropion, mirtazapine, trazodone, vortioxetine, vilazodone, nefazodone
+- Tryptophan, St. John's wort extract
+
+INCLUDE — TRD-specific / augmentation drugs (RxNorm; appear as gold seeds because they are second-line or specifically labeled for TRD):
+- Esketamine (TRD-specific intranasal therapy — strongest TRD-specific signal)
+- Aripiprazole (atypical antipsychotic, FDA-approved as TRD augmentation)
+- Quetiapine (atypical antipsychotic, used as TRD augmentation)
+- Olanzapine (used in olanzapine/fluoxetine combination for TRD)
+- Brexpiprazole (atypical antipsychotic, FDA-approved for MDD augmentation)
+- Risperidone, ziprasidone, paliperidone, clozapine (atypical antipsychotics; also seeds)
+- Lithium (mood stabilizer used as augmentation)
+- Buspirone (5-HT1A partial agonist used as augmentation)
+
+INCLUDE — related conditions and procedures (SNOMED):
+- Major depressive disorder (broad anchor; gold seeds include depression-related descendants)
+- Recurrent depressive disorder
+- Severe depressive episode / major depressive episode
+- Psychotic disorder (gold seed)
+- Degenerative brain disorder (gold seed — broad anchor for some cohort exclusions)
+- Dementia (gold seed — broad anchor)
+- Electroconvulsive therapy (ECT) — second-line treatment for TRD
+- Transcranial magnetic stimulation (TMS) — FDA-approved for TRD
+- Vagus nerve stimulation (VNS) — FDA-approved for TRD
+
+Vocabulary domains expected:
+- Drugs: RxNorm (dominant — the gold has 30+ antidepressant ingredients)
+- Conditions: SNOMED (small number; depression, psychotic disorder, dementia anchors)
+- Procedures: CPT4 / SNOMED (ECT, TMS, VNS)
+
+Strict scope reminder: cohort 1009's inclusion concept set is dominated by individual antidepressant RxNorm ingredients. The single biggest source of false-positive patients in MIMIC is enumeration of psychiatric and substance-use comorbidities (alcohol use, nicotine dependence, anxiety, opioid use, etc.) that the cohort does NOT include in its inclusion concept set. Stay focused on antidepressants + closely-related conditions and procedures.
