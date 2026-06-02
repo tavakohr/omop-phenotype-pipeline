@@ -96,6 +96,17 @@ call_gemini <- function(prompt, model, temperature, max_tokens) {
     model, ":generateContent"
   )
 
+  # Gemini 2.5 Flash accepts thinkingBudget=0 (skip reasoning -> fast).
+  # Gemini 2.5 Pro rejects budget=0; thinking is mandatory. Use dynamic (-1).
+  gen_cfg <- list(
+    temperature      = temperature,
+    maxOutputTokens  = max_tokens,
+    responseMimeType = "application/json",
+    thinkingConfig   = list(
+      thinkingBudget = if (grepl("flash", model, ignore.case = TRUE)) 0L else -1L
+    )
+  )
+
   resp <- request(url) |>
     req_url_query(key = api_key) |>
     req_headers("content-type" = "application/json") |>
@@ -103,14 +114,10 @@ call_gemini <- function(prompt, model, temperature, max_tokens) {
       contents = list(
         list(parts = list(list(text = prompt)))
       ),
-      generationConfig = list(
-        temperature      = temperature,
-        maxOutputTokens  = max_tokens,
-        responseMimeType = "application/json",
-        thinkingConfig   = list(thinkingBudget = 0)
-      )
+      generationConfig = gen_cfg
     )) |>
     req_error(is_error = \(r) FALSE) |>
+    req_timeout(300) |>
     req_perform()
 
   if (resp_status(resp) != 200) {
